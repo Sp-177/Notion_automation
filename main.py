@@ -781,838 +781,812 @@ def getWednesdayEvents(date):
     
     return events
 
-/**
- * Study Schedule Generator for Notion
- * Complete implementation with Thursday through Sunday schedules
- */
-
-/**
- * Get Thursday's events - Analyze & Optimize
- * @param {Date} date - The date for the events
- * @returns {Array} Array of event objects
- */
-function getThursdayEvents(date) {
-  "use strict";
-  const events = [];
-
-  // Morning Preparation
-  events.push({
-    "title": "Morning Preparation",
-    "time": "7:30-8:00 AM",
-    "details": "Bio break, hydration, active recall, prime the brain",
-    "checkbox_items": [
-      "7:30-7:40 AM: Bio break and hydration (10-minute wake-up stretching, 16oz water with lemon, review day's objectives)",
-      "7:40-7:50 AM: Active recall of yesterday's concepts",
-      "7:50-8:00 AM: Prime the brain (5-minute focused breathing, review schedule)"
-    ]
-  });
-
-  // Morning Sessions
-  events.push({
-    "title": "Set the stage",
-    "time": "8:00-8:10 AM",
-    "details": "Brief reflection and set learning objectives",
-    "checkbox_items": [
-      "Brief reflection on contest performance",
-      "Connect today's Networking topics to previous concepts",
-      "Set specific learning objectives"
-    ]
-  });
-
-  events.push({
-    "title": "CS Fundamentals (Computer Networks)",
-    "time": "8:10-9:55 AM",
-    "details": "Deep dive into networking concepts",
-    "checkbox_items": [
-      "15 min: Interleaved review of DBMS concepts",
-      "25 min: Learn networking protocols with concrete examples",
-      "20 min: Create visual network flow diagrams",
-      "25 min: Solve networking problems with think-aloud protocol",
-      "20 min: Connect networking concepts to distributed systems"
-    ]
-  });
-
-  events.push({
-    "title": "Mindful break",
-    "time": "9:55-10:15 AM",
-    "details": "Physical movement, hydration, visualization",
-    "checkbox_items": [
-      "5 min: Different physical movement pattern",
-      "5 min: Hydration with nutrient-rich snack",
-      "10 min: Brief visualization of mastery"
-    ]
-  });
-
-  events.push({
-    "title": "CP Pattern Recognition with Elaborative Interrogation",
-    "time": "10:15-12:15 PM",
-    "details": "Analysis and pattern recognition",
-    "checkbox_items": [
-      "30 min: Analyze yesterday's contest problems deeply",
-      "30 min: Identify recurring patterns with \"why\" questions",
-      "45 min: Create optimized template solutions",
-      "30 min: Practice applying templates to new problems"
-    ]
-  });
-
-  events.push({
-    "title": "Active recovery",
-    "time": "12:15-12:30 PM",
-    "details": "Movement and recovery",
-    "checkbox_items": [
-      "Different movement pattern",
-      "Alternate breathing technique",
-      "Quick sensory reset exercise"
-    ]
-  });
-
-  // Afternoon Sessions
-  events.push({
-    "title": "AIML/Web Dev Networking Focus",
-    "time": "12:30-2:30 PM",
-    "details": "Implementation with networking concepts",
-    "checkbox_items": [
-      "15 min: Review progress and align with networking concepts",
-      "30 min: Design secure communication layer",
-      "60 min: Implementation with deliberate practice",
-      "30 min: Create comprehensive test suite",
-      "15 min: Document with security considerations"
-    ]
-  });
-
-  events.push({
-    "title": "Movement break",
-    "time": "2:30-2:45 PM",
-    "details": "Physical movement and hydration",
-    "checkbox_items": [
-      "Different pattern of movement",
-      "Hydration with different nutrient profile",
-      "Brief energizing stretches"
-    ]
-  });
-
-  events.push({
-    "title": "Lunch break + active learning",
-    "time": "2:45-3:30 PM",
-    "details": "Nutrition and active learning",
-    "checkbox_items": [
-      "Different nutritional profile meal",
-      "Brief teaching of morning concepts (record audio)",
-      "Practice spaced repetition from earlier in week"
-    ]
-  });
-
-  events.push({
-    "title": "System Improvement with Dual Coding",
-    "time": "3:30-5:30 PM",
-    "details": "Optimization using networking concepts",
-    "checkbox_items": [
-      "15 min: Select system to optimize using networking concepts",
-      "30 min: Create visual optimization diagrams",
-      "60 min: Implement optimizations with verbalization",
-      "30 min: Develop performance metrics and testing",
-      "15 min: Document optimization process"
-    ]
-  });
-
-  events.push({
-    "title": "Neurocognitive reset",
-    "time": "5:30-5:45 PM",
-    "details": "Recovery and hydration",
-    "checkbox_items": [
-      "Novel bilateral stimulation exercise",
-      "Hydration with cognitive-supporting nutrients",
-      "Brief progressive relaxation"
-    ]
-  });
-
-  // Evening Sessions
-  events.push({
-    "title": "Interview Practice (HR Focus)",
-    "time": "5:45-6:45 PM",
-    "details": "Prepare for HR interviews",
-    "checkbox_items": [
-      "15 min: Prepare stories demonstrating technical skills",
-      "15 min: Practice delivery with recording",
-      "15 min: Self-critique and improvement",
-      "15 min: Create structured response templates"
-    ]
-  });
-
-  events.push({
-    "title": "Active reflection with retrieval practice",
-    "time": "6:45-7:00 PM",
-    "details": "Reflection and planning",
-    "checkbox_items": [
-      "Write everything remembered from today without notes",
-      "Identify knowledge gaps and create review plan",
-      "Schedule spaced repetition for weak areas"
-    ]
-  });
-
-  events.push({
-    "title": "Dinner + diffuse mode processing",
-    "time": "7:00-8:30 PM",
-    "details": "Nutrition and relaxation",
-    "checkbox_items": [
-      "Brain-supporting nutritional profile",
-      "Gentle physical activity",
-      "Allow mind to wander for insight generation"
-    ]
-  });
-
-  events.push({
-    "title": "Contest Upsolving with Deliberate Practice",
-    "time": "8:30-9:15 PM",
-    "details": "Problem solving and documentation",
-    "checkbox_items": [
-      "Select 1-2 unsolved problems from contest",
-      "Apply structured problem-solving approach",
-      "Document solution with detailed explanations",
-      "Create spaced repetition cards for key insights"
-    ]
-  });
-
-  events.push({
-    "title": "Finance Studies with Application",
-    "time": "9:15-10:00 PM",
-    "details": "Study portfolio theory with applications",
-    "checkbox_items": [
-      "Study portfolio theory with concrete examples",
-      "Create sample portfolio with actual calculations",
-      "Document risk management strategies",
-      "Schedule implementation steps"
-    ]
-  });
-
-  return events;
-}
-
-/**
- * Get Friday's events - Review & Apply
- * @param {Date} date - The date for the events
- * @returns {Array} Array of event objects
- */
-function getFridayEvents(date) {
-  "use strict";
-  const events = [];
-
-  // Morning Preparation
-  events.push({
-    "title": "Morning Preparation",
-    "time": "7:30-8:00 AM",
-    "details": "Bio break, hydration, active recall, prime the brain",
-    "checkbox_items": [
-      "7:30-7:40 AM: Bio break and hydration (10-minute wake-up stretching, 16oz water with lemon, review day's objectives)",
-      "7:40-7:50 AM: Active recall of yesterday's concepts",
-      "7:50-8:00 AM: Prime the brain (5-minute focused breathing, review schedule)"
-    ]
-  });
-
-  // Morning Sessions
-  events.push({
-    "title": "Set the stage",
-    "time": "8:00-8:10 AM",
-    "details": "Weekly progress visualization and goal setting",
-    "checkbox_items": [
-      "Weekly progress visualization",
-      "Connect system design to all week's concepts",
-      "Set ambitious but specific learning goals"
-    ]
-  });
-
-  events.push({
-    "title": "CS Fundamentals (System Design)",
-    "time": "8:10-9:55 AM",
-    "details": "Study system design principles and architecture",
-    "checkbox_items": [
-      "15 min: Interleaved review of week's concepts",
-      "25 min: Study system design principles with examples",
-      "30 min: Create comprehensive architecture diagrams",
-      "35 min: Practice scalability calculations and estimations",
-      "15 min: Connect all week's topics into cohesive design"
-    ]
-  });
-
-  events.push({
-    "title": "Mindful break",
-    "time": "9:55-10:15 AM",
-    "details": "Movement, hydration, visualization",
-    "checkbox_items": [
-      "5 min: Novel physical movement",
-      "5 min: Hydration and brain-supporting snack",
-      "10 min: Brief visualization of integrated knowledge"
-    ]
-  });
-
-  events.push({
-    "title": "CP Advanced Techniques with Deliberate Constraints",
-    "time": "10:15-12:15 PM",
-    "details": "Focus on advanced techniques and implementation",
-    "checkbox_items": [
-      "15 min: Select advanced technique for mastery focus",
-      "30 min: Study mathematical foundations",
-      "45 min: Implement technique with progressive challenges",
-      "30 min: Create teaching document for future reference",
-      "15 min: Design practice plan for maintenance"
-    ]
-  });
-
-  events.push({
-    "title": "Active recovery",
-    "time": "12:15-12:30 PM",
-    "details": "Full-body movement and relaxation",
-    "checkbox_items": [
-      "Full-body movement sequence",
-      "Deep breathing technique",
-      "Brief progressive relaxation"
-    ]
-  });
-
-  // Afternoon Sessions
-  events.push({
-    "title": "AIML/Web Dev Integration Project",
-    "time": "12:30-2:30 PM",
-    "details": "Design and implementation of integrated components",
-    "checkbox_items": [
-      "15 min: Create comprehensive plan integrating week's concepts",
-      "30 min: Design architecture incorporating all principles",
-      "60 min: Implementation of key components",
-      "30 min: Testing and documentation",
-      "15 min: Plan next week's extensions"
-    ]
-  });
-
-  events.push({
-    "title": "Movement break",
-    "time": "2:30-2:45 PM",
-    "details": "Outdoor exposure and hydration",
-    "checkbox_items": [
-      "Short outdoor exposure (nature boost)",
-      "Hydration with different nutrient profile",
-      "Brief energizing stretches"
-    ]
-  });
-
-  events.push({
-    "title": "Lunch break + conceptual integration",
-    "time": "2:45-3:30 PM",
-    "details": "Brain-supporting meal and concept mapping",
-    "checkbox_items": [
-      "Brain-supporting meal",
-      "Create concept map of week's learning",
-      "Brief spaced repetition practice"
-    ]
-  });
-
-  events.push({
-    "title": "Weekly Integration with Feynman Technique",
-    "time": "3:30-5:30 PM",
-    "details": "Comprehensive explanation and teaching",
-    "checkbox_items": [
-      "30 min: Select complex topic combining week's learning",
-      "60 min: Create comprehensive explanation (as if teaching)",
-      "30 min: Develop visual aids and diagrams",
-      "30 min: Create practical application examples"
-    ]
-  });
-
-  events.push({
-    "title": "Cognitive reset",
-    "time": "5:30-5:45 PM",
-    "details": "Movement and mindfulness",
-    "checkbox_items": [
-      "Novel movement pattern",
-      "Hydration with different nutrient profile",
-      "Brief mindfulness practice"
-    ]
-  });
-
-  // Evening Sessions
-  events.push({
-    "title": "Mock Interview (Comprehensive)",
-    "time": "5:45-6:45 PM",
-    "details": "Complete mock interview with self-assessment",
-    "checkbox_items": [
-      "10 min: Mental preparation",
-      "30 min: Complete full mock interview",
-      "15 min: Self-assessment and critique",
-      "10 min: Create focused improvement plan"
-    ]
-  });
-
-  events.push({
-    "title": "Week review with metacognition",
-    "time": "6:45-7:00 PM",
-    "details": "Review objectives and plan for weekend",
-    "checkbox_items": [
-      "Review learning objectives achieved",
-      "Identify knowledge connections formed",
-      "Create focused plan for weekend consolidation"
-    ]
-  });
-
-  events.push({
-    "title": "Dinner + celebration",
-    "time": "7:00-8:30 PM",
-    "details": "Nutritious meal and reflection",
-    "checkbox_items": [
-      "Nutritious meal with enjoyment focus",
-      "Brief reflection on week's accomplishments",
-      "Mental preparation for weekend learning"
-    ]
-  });
-
-  events.push({
-    "title": "Weekly Summary with Spaced Repetition Planning",
-    "time": "8:30-9:15 PM",
-    "details": "Create summary and review schedule",
-    "checkbox_items": [
-      "Create comprehensive summary document",
-      "Design optimal review schedule for next week",
-      "Identify most valuable concepts for maintenance",
-      "Schedule specific review times"
-    ]
-  });
-
-  events.push({
-    "title": "Finance Studies with Integration",
-    "time": "9:15-10:00 PM",
-    "details": "Review financial concepts and plan application",
-    "checkbox_items": [
-      "Review all financial concepts from week",
-      "Create practical application plan",
-      "Connect to personal financial goals",
-      "Schedule implementation steps"
-    ]
-  });
-
-  return events;
-}
-
-/**
- * Get Saturday's events - Challenge & Compete
- * @param {Date} date - The date for the events
- * @returns {Array} Array of event objects
- */
-function getSaturdayEvents(date) {
-  "use strict";
-  const events = [];
-
-  // Morning Preparation
-  events.push({
-    "title": "Morning Preparation",
-    "time": "7:30-8:00 AM",
-    "details": "Bio break, hydration, active recall, prime the brain",
-    "checkbox_items": [
-      "7:30-7:40 AM: Bio break and hydration (10-minute wake-up stretching, 16oz water with lemon, review day's objectives)",
-      "7:40-7:50 AM: Active recall of yesterday's concepts",
-      "7:50-8:00 AM: Prime the brain (5-minute focused breathing, review schedule)"
-    ]
-  });
-
-  // Morning Sessions
-  events.push({
-    "title": "CS Fundamentals Comprehensive Review",
-    "time": "8:00-10:00 AM",
-    "details": "Active recall and concept mapping",
-    "checkbox_items": [
-      "20 min: Active recall of all week's concepts",
-      "40 min: Create interconnected concept map",
-      "30 min: Identify and address knowledge gaps",
-      "30 min: Practice integrated problem solving"
-    ]
-  });
-
-  events.push({
-    "title": "Mindful break",
-    "time": "10:00-10:15 AM",
-    "details": "Movement, hydration, visualization",
-    "checkbox_items": [
-      "5 min: Novel physical movement",
-      "5 min: Hydration and brain-supporting snack",
-      "10 min: Brief visualization of successful learning"
-    ]
-  });
-
-  events.push({
-    "title": "CP Challenge Practice with Desirable Difficulty",
-    "time": "10:15-12:15 PM",
-    "details": "Challenging problem solving with time constraints",
-    "checkbox_items": [
-      "15 min: Select challenging multi-concept problems",
-      "45 min: Solve with time constraints",
-      "30 min: Analyze and optimize solutions",
-      "30 min: Document problem-solving heuristics",
-      "15 min: Create practice plan for maintaining skills"
-    ]
-  });
-
-  events.push({
-    "title": "Active recovery",
-    "time": "12:15-12:30 PM",
-    "details": "Movement and mindfulness",
-    "checkbox_items": [
-      "Novel movement pattern",
-      "Breathing technique for focus",
-      "Brief mindfulness practice"
-    ]
-  });
-
-  // Afternoon Sessions
-  events.push({
-    "title": "AIML/Web Dev Project with Deliberate Practice",
-    "time": "12:30-2:30 PM",
-    "details": "Advanced feature implementation",
-    "checkbox_items": [
-      "15 min: Review project status and objectives",
-      "30 min: Design advanced feature implementation",
-      "60 min: Implementation with intentional constraints",
-      "30 min: Testing and documentation",
-      "15 min: Plan next week's development"
-    ]
-  });
-
-  events.push({
-    "title": "Movement break",
-    "time": "2:30-2:45 PM",
-    "details": "Movement and hydration",
-    "checkbox_items": [
-      "Different movement pattern",
-      "Hydration with cognitive-supporting nutrients",
-      "Brief energizing stretches"
-    ]
-  });
-
-  events.push({
-    "title": "Lunch break + learning consolidation",
-    "time": "2:45-3:30 PM",
-    "details": "Brain-supporting meal and review",
-    "checkbox_items": [
-      "Brain-supporting nutritional profile",
-      "Brief review of morning's progress",
-      "Mental preparation for afternoon session"
-    ]
-  });
-
-  events.push({
-    "title": "Deep Brainstorming with SCAMPER Technique",
-    "time": "3:30-5:30 PM",
-    "details": "Creative problem solving and implementation planning",
-    "checkbox_items": [
-      "15 min: Select challenging problem incorporating week's concepts",
-      "45 min: Apply SCAMPER methodology for creative solutions",
-      "45 min: Develop most promising ideas",
-      "30 min: Create implementation roadmap",
-      "15 min: Document process and insights"
-    ]
-  });
-
-  events.push({
-    "title": "Contest preparation",
-    "time": "5:30-5:45 PM",
-    "details": "Mental preparation and hydration",
-    "checkbox_items": [
-      "Mental rehearsal of contest strategies",
-      "Hydration and brain-supporting snack",
-      "Brief relaxation technique"
-    ]
-  });
-
-  // Evening Sessions
-  events.push({
-    "title": "System Design Interview Practice",
-    "time": "5:45-6:45 PM",
-    "details": "Complex design challenge with documentation",
-    "checkbox_items": [
-      "10 min: Select complex design challenge",
-      "20 min: Create comprehensive design with verbalization",
-      "15 min: Self-critique and improvement",
-      "15 min: Document design patterns and principles"
-    ]
-  });
-
-  events.push({
-    "title": "Contest Preparation (Biweekly)",
-    "time": "6:45-7:00 PM",
-    "details": "Strategy review and goal setting",
-    "checkbox_items": [
-      "Review contest strategies",
-      "Set specific, challenging goals",
-      "Final mental preparation with visualization"
-    ]
-  });
-
-  events.push({
-    "title": "Dinner + Contest Prep",
-    "time": "7:00-8:00 PM",
-    "details": "Balanced meal and mental preparation",
-    "checkbox_items": [
-      "Balanced meal for optimal brain function",
-      "Brief relaxation techniques",
-      "Final mental preparation"
-    ]
-  });
-
-  events.push({
-    "title": "BIWEEKLY CONTEST with Metacognition",
-    "time": "8:00-10:00 PM",
-    "details": "Strategic problem solving and documentation",
-    "checkbox_items": [
-      "Apply strategic problem selection",
-      "Document thinking process during solving",
-      "Regular cognitive check-ins during contest",
-      "Apply pattern recognition techniques"
-    ]
-  });
-
-  return events;
-}
-
-/**
- * Get Sunday's events - Recover & Plan
- * @param {Date} date - The date for the events
- * @returns {Array} Array of event objects
- */
-def getSundayEvents(date) {
-  "use strict";
-  const events = [];
-
-  // Morning Preparation
-  events.push({
-    "title": "Morning Preparation",
-    "time": "7:30-8:00 AM",
-    "details": "Bio break, hydration, active recall, prime the brain",
-    "checkbox_items": [
-      "7:30-7:40 AM: Bio break and hydration (10-minute wake-up stretching, 16oz water with lemon, review day's objectives)",
-      "7:40-7:50 AM: Active recall of yesterday's concepts",
-      "7:50-8:00 AM: Prime the brain (5-minute focused breathing, review schedule)"
-    ]
-  });
-
-  // Morning Sessions
-  events.push({
-    "title": "WEEKLY CONTEST with Strategic Approach",
-    "time": "8:00-10:00 AM",
-    "details": "Strategic contest participation",
-    "checkbox_items": [
-      "Apply all week's learning strategically",
-      "Use time management techniques",
-      "Apply pattern recognition for problem selection",
-      "Document approaches for later review"
-    ]
-  });
-
-  events.push({
-    "title": "Mindful break",
-    "time": "10:00-10:15 AM",
-    "details": "Recovery movement and hydration",
-    "checkbox_items": [
-      "Recovery movement",
-      "Hydration and nutrient replenishment",
-      "Brief mindfulness practice"
-    ]
-  });
-
-  events.push({
-    "title": "Contest Upsolving with Deliberate Practice",
-    "time": "10:15-12:15 PM",
-    "details": "Systematic analysis and implementation",
-    "checkbox_items": [
-      "Analyze all contest problems systematically",
-      "Study efficient solutions with deep understanding",
-      "Implement solutions with verbalization",
-      "Create template solutions for future reference",
-      "Schedule spaced review of techniques"
-    ]
-  });
-
-  events.push({
-    "title": "Active recovery",
-    "time": "12:15-12:30 PM",
-    "details": "Full-body movement and relaxation",
-    "checkbox_items": [
-      "Full-body movement sequence",
-      "Deep breathing technique",
-      "Brief progressive relaxation"
-    ]
-  });
-
-  // Afternoon Sessions
-  events.push({
-    "title": "Weekly Planning with OKR Approach",
-    "time": "12:30-2:30 PM",
-    "details": "Review accomplishments and set objectives",
-    "checkbox_items": [
-      "Review previous week's accomplishments",
-      "Set specific objectives for coming week",
-      "Create detailed key results for each objective",
-      "Align with monthly learning roadmap",
-      "Prepare resources for Monday's topics"
-    ]
-  });
-
-  events.push({
-    "title": "Movement break",
-    "time": "2:30-2:45 PM",
-    "details": "Nature exposure and hydration",
-    "checkbox_items": [
-      "Nature exposure if possible",
-      "Hydration with recovery nutrients",
-      "Brief stretching sequence"
-    ]
-  });
-
-  events.push({
-    "title": "Lunch + extended break",
-    "time": "2:45-3:30 PM",
-    "details": "Nutritious meal and mental disconnection",
-    "checkbox_items": [
-      "Nutritious recovery meal",
-      "Complete mental disconnection",
-      "Light physical activity"
-    ]
-  });
-
-  events.push({
-    "title": "Weekly Review & Planning with Interleaving",
-    "time": "3:30-5:30 PM",
-    "details": "Comprehensive review and planning",
-    "checkbox_items": [
-      "Create comprehensive review of all topics",
-      "Identify connections between domains",
-      "Create spaced repetition schedule for coming week",
-      "Design interleaved practice sessions",
-      "Prepare study materials for Monday"
-    ]
-  });
-
-  events.push({
-    "title": "Mindful reset",
-    "time": "5:30-5:45 PM",
-    "details": "Movement and mindfulness",
-    "checkbox_items": [
-      "Novel movement pattern",
-      "Hydration with different nutrient profile",
-      "Brief mindfulness practice"
-    ]
-  });
-
-  // Evening Sessions
-  events.push({
-    "title": "Next Week Planning with Implementation Intentions",
-    "time": "5:45-6:45 PM",
-    "details": "Specific planning with accountability",
-    "checkbox_items": [
-      "Create specific if-then plans for learning objectives",
-      "Design optimal schedule incorporating spaced repetition",
-      "Prepare environment and resources",
-      "Create accountability measures"
-    ]
-  });
-
-  events.push({
-    "title": "Week closure with gratitude practice",
-    "time": "6:45-7:00 PM",
-    "details": "Document accomplishments and set intentions",
-    "checkbox_items": [
-      "Document specific learning accomplishments",
-      "Acknowledge progress in each domain",
-      "Set positive intentions for coming week"
-    ]
-  });
-
-  events.push({
-    "title": "Dinner + Free Time",
-    "time": "7:00-8:30 PM",
-    "details": "Nutritious meal and mental break",
-    "checkbox_items": [
-      "Nutritious meal with enjoyment focus",
-      "Complete mental break from technical content",
-      "Social or creative activity"
-    ]
-  });
-
-  events.push({
-    "title": "Light Exploration with Wonder Questions",
-    "time": "8:30-9:15 PM",
-    "details": "Curiosity-driven exploration",
-    "checkbox_items": [
-      "Select topics for coming week",
-      "Create curiosity-driven questions",
-      "Brief exploration without pressure",
-      "Set learning intentions"
-    ]
-  });
-
-  events.push({
-    "title": "Finance Studies with Weekly Review",
-    "time": "9:15-10:00 PM",
-    "details": "Financial review and goal setting",
-    "checkbox_items": [
-      "Review financial learning progress",
-      "Update tracking systems",
-      "Set specific financial goals for coming week",
-      "Create implementation schedule"
-    ]
-  });
-
-  return events;
-}
-
-/**
- * Get all events for a specific day of the week
- * @param {Date} date - The date for which to get events
- * @returns {Array} Array of event objects for the specified date
- */
-function getEventsForDay(date) {
-  const day = date.getDay();
-  
-  switch(day) {
-    case 0: // Sunday
-      return getSundayEvents(date);
-case 1: // Monday
-      return getThursdayEvents(date);
-    case 2: // Tuesday
-      return getFridayEvents(date);
-    case 3: // Wednesday
-      return getSaturdayEvents(date);
-
-    case 4: // Thursday
-      return getThursdayEvents(date);
-    case 5: // Friday
-      return getFridayEvents(date);
-    case 6: // Saturday
-      return getSaturdayEvents(date);
-    default:
-      return [{ 
-        "title": "No events scheduled", 
-        "time": "All day", 
-        "details": "This day doesn't have a specific schedule",
-        "checkbox_items": ["Plan your day according to priorities"]
-      }];
-  }
-}
-
-// Example usage:
-const today = new Date();
-const mondaydayEvents = getThursdayEvents(today);
-const tuesdayEvents = getFridayEvents(today);
-const wednesdayEvents = getSaturdayEvents(today);
-const thursdayEvents = getThursdayEvents(today);
-const fridayEvents = getFridayEvents(today);
-const saturdayEvents = getSaturdayEvents(today);
-const sundayEvents = getSundayEvents(today);
-
-// You can use these events in Notion by copying the output of:
-// console.log(JSON.stringify(thursdayEvents, null, 2));
-
-// Export all functions for use in Notion
-module.exports = {
-    getMondayEvents,getTuesdayEvents,getWednesdayEvets,
-  getThursdayEvents,
-  getFridayEvents,
-  getSaturdayEvents,
-  getSundayEvents,
-  getEventsForDay
-};
+"""
+Study Schedule Generator for Notion
+Complete implementation with Thursday through Sunday schedules
+"""
+
+import datetime
+
+def get_thursday_events(date):
+    """Get Thursday's events - Analyze & Optimize"""
+    events = []
+
+    # Morning Preparation
+    events.append({
+        "title": "Morning Preparation",
+        "time": "7:30-8:00 AM",
+        "details": "Bio break, hydration, active recall, prime the brain",
+        "checkbox_items": [
+            "7:30-7:40 AM: Bio break and hydration (10-minute wake-up stretching, 16oz water with lemon, review day's objectives)",
+            "7:40-7:50 AM: Active recall of yesterday's concepts",
+            "7:50-8:00 AM: Prime the brain (5-minute focused breathing, review schedule)"
+        ]
+    })
+
+    # Morning Sessions
+    events.append({
+        "title": "Set the stage",
+        "time": "8:00-8:10 AM",
+        "details": "Brief reflection and set learning objectives",
+        "checkbox_items": [
+            "Brief reflection on contest performance",
+            "Connect today's Networking topics to previous concepts",
+            "Set specific learning objectives"
+        ]
+    })
+
+    events.append({
+        "title": "CS Fundamentals (Computer Networks)",
+        "time": "8:10-9:55 AM",
+        "details": "Deep dive into networking concepts",
+        "checkbox_items": [
+            "15 min: Interleaved review of DBMS concepts",
+            "25 min: Learn networking protocols with concrete examples",
+            "20 min: Create visual network flow diagrams",
+            "25 min: Solve networking problems with think-aloud protocol",
+            "20 min: Connect networking concepts to distributed systems"
+        ]
+    })
+
+    events.append({
+        "title": "Mindful break",
+        "time": "9:55-10:15 AM",
+        "details": "Physical movement, hydration, visualization",
+        "checkbox_items": [
+            "5 min: Different physical movement pattern",
+            "5 min: Hydration with nutrient-rich snack",
+            "10 min: Brief visualization of mastery"
+        ]
+    })
+
+    events.append({
+        "title": "CP Pattern Recognition with Elaborative Interrogation",
+        "time": "10:15-12:15 PM",
+        "details": "Analysis and pattern recognition",
+        "checkbox_items": [
+            "30 min: Analyze yesterday's contest problems deeply",
+            "30 min: Identify recurring patterns with \"why\" questions",
+            "45 min: Create optimized template solutions",
+            "30 min: Practice applying templates to new problems"
+        ]
+    })
+
+    events.append({
+        "title": "Active recovery",
+        "time": "12:15-12:30 PM",
+        "details": "Movement and recovery",
+        "checkbox_items": [
+            "Different movement pattern",
+            "Alternate breathing technique",
+            "Quick sensory reset exercise"
+        ]
+    })
+
+    # Afternoon Sessions
+    events.append({
+        "title": "AIML/Web Dev Networking Focus",
+        "time": "12:30-2:30 PM",
+        "details": "Implementation with networking concepts",
+        "checkbox_items": [
+            "15 min: Review progress and align with networking concepts",
+            "30 min: Design secure communication layer",
+            "60 min: Implementation with deliberate practice",
+            "30 min: Create comprehensive test suite",
+            "15 min: Document with security considerations"
+        ]
+    })
+
+    events.append({
+        "title": "Movement break",
+        "time": "2:30-2:45 PM",
+        "details": "Physical movement and hydration",
+        "checkbox_items": [
+            "Different pattern of movement",
+            "Hydration with different nutrient profile",
+            "Brief energizing stretches"
+        ]
+    })
+
+    events.append({
+        "title": "Lunch break + active learning",
+        "time": "2:45-3:30 PM",
+        "details": "Nutrition and active learning",
+        "checkbox_items": [
+            "Different nutritional profile meal",
+            "Brief teaching of morning concepts (record audio)",
+            "Practice spaced repetition from earlier in week"
+        ]
+    })
+
+    events.append({
+        "title": "System Improvement with Dual Coding",
+        "time": "3:30-5:30 PM",
+        "details": "Optimization using networking concepts",
+        "checkbox_items": [
+            "15 min: Select system to optimize using networking concepts",
+            "30 min: Create visual optimization diagrams",
+            "60 min: Implement optimizations with verbalization",
+            "30 min: Develop performance metrics and testing",
+            "15 min: Document optimization process"
+        ]
+    })
+
+    events.append({
+        "title": "Neurocognitive reset",
+        "time": "5:30-5:45 PM",
+        "details": "Recovery and hydration",
+        "checkbox_items": [
+            "Novel bilateral stimulation exercise",
+            "Hydration with cognitive-supporting nutrients",
+            "Brief progressive relaxation"
+        ]
+    })
+
+    # Evening Sessions
+    events.append({
+        "title": "Interview Practice (HR Focus)",
+        "time": "5:45-6:45 PM",
+        "details": "Prepare for HR interviews",
+        "checkbox_items": [
+            "15 min: Prepare stories demonstrating technical skills",
+            "15 min: Practice delivery with recording",
+            "15 min: Self-critique and improvement",
+            "15 min: Create structured response templates"
+        ]
+    })
+
+    events.append({
+        "title": "Active reflection with retrieval practice",
+        "time": "6:45-7:00 PM",
+        "details": "Reflection and planning",
+        "checkbox_items": [
+            "Write everything remembered from today without notes",
+            "Identify knowledge gaps and create review plan",
+            "Schedule spaced repetition for weak areas"
+        ]
+    })
+
+    events.append({
+        "title": "Dinner + diffuse mode processing",
+        "time": "7:00-8:30 PM",
+        "details": "Nutrition and relaxation",
+        "checkbox_items": [
+            "Brain-supporting nutritional profile",
+            "Gentle physical activity",
+            "Allow mind to wander for insight generation"
+        ]
+    })
+
+    events.append({
+        "title": "Contest Upsolving with Deliberate Practice",
+        "time": "8:30-9:15 PM",
+        "details": "Problem solving and documentation",
+        "checkbox_items": [
+            "Select 1-2 unsolved problems from contest",
+            "Apply structured problem-solving approach",
+            "Document solution with detailed explanations",
+            "Create spaced repetition cards for key insights"
+        ]
+    })
+
+    events.append({
+        "title": "Finance Studies with Application",
+        "time": "9:15-10:00 PM",
+        "details": "Study portfolio theory with applications",
+        "checkbox_items": [
+            "Study portfolio theory with concrete examples",
+            "Create sample portfolio with actual calculations",
+            "Document risk management strategies",
+            "Schedule implementation steps"
+        ]
+    })
+
+    return events
+
+
+def get_friday_events(date):
+    """Get Friday's events - Review & Apply"""
+    events = []
+
+    # Morning Preparation
+    events.append({
+        "title": "Morning Preparation",
+        "time": "7:30-8:00 AM",
+        "details": "Bio break, hydration, active recall, prime the brain",
+        "checkbox_items": [
+            "7:30-7:40 AM: Bio break and hydration (10-minute wake-up stretching, 16oz water with lemon, review day's objectives)",
+            "7:40-7:50 AM: Active recall of yesterday's concepts",
+            "7:50-8:00 AM: Prime the brain (5-minute focused breathing, review schedule)"
+        ]
+    })
+
+    # Morning Sessions
+    events.append({
+        "title": "Set the stage",
+        "time": "8:00-8:10 AM",
+        "details": "Weekly progress visualization and goal setting",
+        "checkbox_items": [
+            "Weekly progress visualization",
+            "Connect system design to all week's concepts",
+            "Set ambitious but specific learning goals"
+        ]
+    })
+
+    events.append({
+        "title": "CS Fundamentals (System Design)",
+        "time": "8:10-9:55 AM",
+        "details": "Study system design principles and architecture",
+        "checkbox_items": [
+            "15 min: Interleaved review of week's concepts",
+            "25 min: Study system design principles with examples",
+            "30 min: Create comprehensive architecture diagrams",
+            "35 min: Practice scalability calculations and estimations",
+            "15 min: Connect all week's topics into cohesive design"
+        ]
+    })
+
+    events.append({
+        "title": "Mindful break",
+        "time": "9:55-10:15 AM",
+        "details": "Movement, hydration, visualization",
+        "checkbox_items": [
+            "5 min: Novel physical movement",
+            "5 min: Hydration and brain-supporting snack",
+            "10 min: Brief visualization of integrated knowledge"
+        ]
+    })
+
+    events.append({
+        "title": "CP Advanced Techniques with Deliberate Constraints",
+        "time": "10:15-12:15 PM",
+        "details": "Focus on advanced techniques and implementation",
+        "checkbox_items": [
+            "15 min: Select advanced technique for mastery focus",
+            "30 min: Study mathematical foundations",
+            "45 min: Implement technique with progressive challenges",
+            "30 min: Create teaching document for future reference",
+            "15 min: Design practice plan for maintenance"
+        ]
+    })
+
+    events.append({
+        "title": "Active recovery",
+        "time": "12:15-12:30 PM",
+        "details": "Full-body movement and relaxation",
+        "checkbox_items": [
+            "Full-body movement sequence",
+            "Deep breathing technique",
+            "Brief progressive relaxation"
+        ]
+    })
+
+    # Afternoon Sessions
+    events.append({
+        "title": "AIML/Web Dev Integration Project",
+        "time": "12:30-2:30 PM",
+        "details": "Design and implementation of integrated components",
+        "checkbox_items": [
+            "15 min: Create comprehensive plan integrating week's concepts",
+            "30 min: Design architecture incorporating all principles",
+            "60 min: Implementation of key components",
+            "30 min: Testing and documentation",
+            "15 min: Plan next week's extensions"
+        ]
+    })
+
+    events.append({
+        "title": "Movement break",
+        "time": "2:30-2:45 PM",
+        "details": "Outdoor exposure and hydration",
+        "checkbox_items": [
+            "Short outdoor exposure (nature boost)",
+            "Hydration with different nutrient profile",
+            "Brief energizing stretches"
+        ]
+    })
+
+    events.append({
+        "title": "Lunch break + conceptual integration",
+        "time": "2:45-3:30 PM",
+        "details": "Brain-supporting meal and concept mapping",
+        "checkbox_items": [
+            "Brain-supporting meal",
+            "Create concept map of week's learning",
+            "Brief spaced repetition practice"
+        ]
+    })
+
+    events.append({
+        "title": "Weekly Integration with Feynman Technique",
+        "time": "3:30-5:30 PM",
+        "details": "Comprehensive explanation and teaching",
+        "checkbox_items": [
+            "30 min: Select complex topic combining week's learning",
+            "60 min: Create comprehensive explanation (as if teaching)",
+            "30 min: Develop visual aids and diagrams",
+            "30 min: Create practical application examples"
+        ]
+    })
+
+    events.append({
+        "title": "Cognitive reset",
+        "time": "5:30-5:45 PM",
+        "details": "Movement and mindfulness",
+        "checkbox_items": [
+            "Novel movement pattern",
+            "Hydration with different nutrient profile",
+            "Brief mindfulness practice"
+        ]
+    })
+
+    # Evening Sessions
+    events.append({
+        "title": "Mock Interview (Comprehensive)",
+        "time": "5:45-6:45 PM",
+        "details": "Complete mock interview with self-assessment",
+        "checkbox_items": [
+            "10 min: Mental preparation",
+            "30 min: Complete full mock interview",
+            "15 min: Self-assessment and critique",
+            "10 min: Create focused improvement plan"
+        ]
+    })
+
+    events.append({
+        "title": "Week review with metacognition",
+        "time": "6:45-7:00 PM",
+        "details": "Review objectives and plan for weekend",
+        "checkbox_items": [
+            "Review learning objectives achieved",
+            "Identify knowledge connections formed",
+            "Create focused plan for weekend consolidation"
+        ]
+    })
+
+    events.append({
+        "title": "Dinner + celebration",
+        "time": "7:00-8:30 PM",
+        "details": "Nutritious meal and reflection",
+        "checkbox_items": [
+            "Nutritious meal with enjoyment focus",
+            "Brief reflection on week's accomplishments",
+            "Mental preparation for weekend learning"
+        ]
+    })
+
+    events.append({
+        "title": "Weekly Summary with Spaced Repetition Planning",
+        "time": "8:30-9:15 PM",
+        "details": "Create summary and review schedule",
+        "checkbox_items": [
+            "Create comprehensive summary document",
+            "Design optimal review schedule for next week",
+            "Identify most valuable concepts for maintenance",
+            "Schedule specific review times"
+        ]
+    })
+
+    events.append({
+        "title": "Finance Studies with Integration",
+        "time": "9:15-10:00 PM",
+        "details": "Review financial concepts and plan application",
+        "checkbox_items": [
+            "Review all financial concepts from week",
+            "Create practical application plan",
+            "Connect to personal financial goals",
+            "Schedule implementation steps"
+        ]
+    })
+
+    return events
+
+
+def get_saturday_events(date):
+    """Get Saturday's events - Challenge & Compete"""
+    events = []
+
+    # Morning Preparation
+    events.append({
+        "title": "Morning Preparation",
+        "time": "7:30-8:00 AM",
+        "details": "Bio break, hydration, active recall, prime the brain",
+        "checkbox_items": [
+            "7:30-7:40 AM: Bio break and hydration (10-minute wake-up stretching, 16oz water with lemon, review day's objectives)",
+            "7:40-7:50 AM: Active recall of yesterday's concepts",
+            "7:50-8:00 AM: Prime the brain (5-minute focused breathing, review schedule)"
+        ]
+    })
+
+    # Morning Sessions
+    events.append({
+        "title": "CS Fundamentals Comprehensive Review",
+        "time": "8:00-10:00 AM",
+        "details": "Active recall and concept mapping",
+        "checkbox_items": [
+            "20 min: Active recall of all week's concepts",
+            "40 min: Create interconnected concept map",
+            "30 min: Identify and address knowledge gaps",
+            "30 min: Practice integrated problem solving"
+        ]
+    })
+
+    events.append({
+        "title": "Mindful break",
+        "time": "10:00-10:15 AM",
+        "details": "Movement, hydration, visualization",
+        "checkbox_items": [
+            "5 min: Novel physical movement",
+            "5 min: Hydration and brain-supporting snack",
+            "10 min: Brief visualization of successful learning"
+        ]
+    })
+
+    events.append({
+        "title": "CP Challenge Practice with Desirable Difficulty",
+        "time": "10:15-12:15 PM",
+        "details": "Challenging problem solving with time constraints",
+        "checkbox_items": [
+            "15 min: Select challenging multi-concept problems",
+            "45 min: Solve with time constraints",
+            "30 min: Analyze and optimize solutions",
+            "30 min: Document problem-solving heuristics",
+            "15 min: Create practice plan for maintaining skills"
+        ]
+    })
+
+    events.append({
+        "title": "Active recovery",
+        "time": "12:15-12:30 PM",
+        "details": "Movement and mindfulness",
+        "checkbox_items": [
+            "Novel movement pattern",
+            "Breathing technique for focus",
+            "Brief mindfulness practice"
+        ]
+    })
+
+    # Afternoon Sessions
+    events.append({
+        "title": "AIML/Web Dev Project with Deliberate Practice",
+        "time": "12:30-2:30 PM",
+        "details": "Advanced feature implementation",
+        "checkbox_items": [
+            "15 min: Review project status and objectives",
+            "30 min: Design advanced feature implementation",
+            "60 min: Implementation with intentional constraints",
+            "30 min: Testing and documentation",
+            "15 min: Plan next week's development"
+        ]
+    })
+
+    events.append({
+        "title": "Movement break",
+        "time": "2:30-2:45 PM",
+        "details": "Movement and hydration",
+        "checkbox_items": [
+            "Different movement pattern",
+            "Hydration with cognitive-supporting nutrients",
+            "Brief energizing stretches"
+        ]
+    })
+
+    events.append({
+        "title": "Lunch break + learning consolidation",
+        "time": "2:45-3:30 PM",
+        "details": "Brain-supporting meal and review",
+        "checkbox_items": [
+            "Brain-supporting nutritional profile",
+            "Brief review of morning's progress",
+            "Mental preparation for afternoon session"
+        ]
+    })
+
+    events.append({
+        "title": "Deep Brainstorming with SCAMPER Technique",
+        "time": "3:30-5:30 PM",
+        "details": "Creative problem solving and implementation planning",
+        "checkbox_items": [
+            "15 min: Select challenging problem incorporating week's concepts",
+            "45 min: Apply SCAMPER methodology for creative solutions",
+            "45 min: Develop most promising ideas",
+            "30 min: Create implementation roadmap",
+            "15 min: Document process and insights"
+        ]
+    })
+
+    events.append({
+        "title": "Contest preparation",
+        "time": "5:30-5:45 PM",
+        "details": "Mental preparation and hydration",
+        "checkbox_items": [
+            "Mental rehearsal of contest strategies",
+            "Hydration and brain-supporting snack",
+            "Brief relaxation technique"
+        ]
+    })
+
+    # Evening Sessions
+    events.append({
+        "title": "System Design Interview Practice",
+        "time": "5:45-6:45 PM",
+        "details": "Complex design challenge with documentation",
+        "checkbox_items": [
+            "10 min: Select complex design challenge",
+            "20 min: Create comprehensive design with verbalization",
+            "15 min: Self-critique and improvement",
+            "15 min: Document design patterns and principles"
+        ]
+    })
+
+    events.append({
+        "title": "Contest Preparation (Biweekly)",
+        "time": "6:45-7:00 PM",
+        "details": "Strategy review and goal setting",
+        "checkbox_items": [
+            "Review contest strategies",
+            "Set specific, challenging goals",
+            "Final mental preparation with visualization"
+        ]
+    })
+
+    events.append({
+        "title": "Dinner + Contest Prep",
+        "time": "7:00-8:00 PM",
+        "details": "Balanced meal and mental preparation",
+        "checkbox_items": [
+            "Balanced meal for optimal brain function",
+            "Brief relaxation techniques",
+            "Final mental preparation"
+        ]
+    })
+
+    events.append({
+        "title": "BIWEEKLY CONTEST with Metacognition",
+        "time": "8:00-10:00 PM",
+        "details": "Strategic problem solving and documentation",
+        "checkbox_items": [
+            "Apply strategic problem selection",
+            "Document thinking process during solving",
+            "Regular cognitive check-ins during contest",
+            "Apply pattern recognition techniques"
+        ]
+    })
+
+    return events
+
+
+def get_sunday_events(date):
+    """Get Sunday's events - Recover & Plan"""
+    events = []
+
+    # Morning Preparation
+    events.append({
+        "title": "Morning Preparation",
+        "time": "7:30-8:00 AM",
+        "details": "Bio break, hydration, active recall, prime the brain",
+        "checkbox_items": [
+            "7:30-7:40 AM: Bio break and hydration (10-minute wake-up stretching, 16oz water with lemon, review day's objectives)",
+            "7:40-7:50 AM: Active recall of yesterday's concepts",
+            "7:50-8:00 AM: Prime the brain (5-minute focused breathing, review schedule)"
+        ]
+    })
+
+    # Morning Sessions
+    events.append({
+        "title": "WEEKLY CONTEST with Strategic Approach",
+        "time": "8:00-10:00 AM",
+        "details": "Strategic contest participation",
+        "checkbox_items": [
+            "Apply all week's learning strategically",
+            "Use time management techniques",
+            "Apply pattern recognition for problem selection",
+            "Document approaches for later review"
+        ]
+    })
+
+    events.append({
+        "title": "Mindful break",
+        "time": "10:00-10:15 AM",
+        "details": "Recovery movement and hydration",
+        "checkbox_items": [
+            "Recovery movement",
+            "Hydration and nutrient replenishment",
+            "Brief mindfulness practice"
+        ]
+    })
+
+    events.append({
+        "title": "Contest Upsolving with Deliberate Practice",
+        "time": "10:15-12:15 PM",
+        "details": "Systematic analysis and implementation",
+        "checkbox_items": [
+            "Analyze all contest problems systematically",
+            "Study efficient solutions with deep understanding",
+            "Implement solutions with verbalization",
+            "Create template solutions for future reference",
+            "Schedule spaced review of techniques"
+        ]
+    })
+
+    events.append({
+        "title": "Active recovery",
+        "time": "12:15-12:30 PM",
+        "details": "Full-body movement and relaxation",
+        "checkbox_items": [
+            "Full-body movement sequence",
+            "Deep breathing technique",
+            "Brief progressive relaxation"
+        ]
+    })
+
+    # Afternoon Sessions
+    events.append({
+        "title": "Weekly Planning with OKR Approach",
+        "time": "12:30-2:30 PM",
+        "details": "Review accomplishments and set objectives",
+        "checkbox_items": [
+            "Review previous week's accomplishments",
+            "Set specific objectives for coming week",
+            "Create detailed key results for each objective",
+            "Align with monthly learning roadmap",
+            "Prepare resources for Monday's topics"
+        ]
+    })
+
+    events.append({
+        "title": "Movement break",
+        "time": "2:30-2:45 PM",
+        "details": "Nature exposure and hydration",
+        "checkbox_items": [
+            "Nature exposure if possible",
+            "Hydration with recovery nutrients",
+            "Brief stretching sequence"
+        ]
+    })
+
+    events.append({
+        "title": "Lunch + extended break",
+        "time": "2:45-3:30 PM",
+        "details": "Nutritious meal and mental disconnection",
+        "checkbox_items": [
+            "Nutritious recovery meal",
+            "Complete mental disconnection",
+            "Light physical activity"
+        ]
+    })
+
+    events.append({
+        "title": "Weekly Review & Planning with Interleaving",
+        "time": "3:30-5:30 PM",
+        "details": "Comprehensive review and planning",
+        "checkbox_items": [
+            "Create comprehensive review of all topics",
+            "Identify connections between domains",
+            "Create spaced repetition schedule for coming week",
+            "Design interleaved practice sessions",
+            "Prepare study materials for Monday"
+        ]
+    })
+
+    events.append({
+        "title": "Mindful reset",
+        "time": "5:30-5:45 PM",
+        "details": "Movement and mindfulness",
+        "checkbox_items": [
+            "Novel movement pattern",
+            "Hydration with different nutrient profile",
+            "Brief mindfulness practice"
+        ]
+    })
+
+    # Evening Sessions
+    events.append({
+        "title": "Next Week Planning with Implementation Intentions",
+        "time": "5:45-6:45 PM",
+        "details": "Specific planning with accountability",
+        "checkbox_items": [
+            "Create specific if-then plans for learning objectives",
+            "Design optimal schedule incorporating spaced repetition",
+            "Prepare environment and resources",
+            "Create accountability measures"
+        ]
+    })
+
+    events.append({
+        "title": "Week closure with gratitude practice",
+        "time": "6:45-7:00 PM",
+        "details": "Document accomplishments and set intentions",
+        "checkbox_items": [
+            "Document specific learning accomplishments",
+            "Acknowledge progress in each domain",
+            "Set positive intentions for coming week"
+        ]
+    })
+
+    events.append({
+        "title": "Dinner + Free Time",
+        "time": "7:00-8:30 PM",
+        "details": "Nutritious meal and mental break",
+        "checkbox_items": [
+            "Nutritious meal with enjoyment focus",
+            "Complete mental break from technical content",
+            "Social or creative activity"
+        ]
+    })
+
+    events.append({
+        "title": "Light Exploration with Wonder Questions",
+        "time": "8:30-9:15 PM",
+        "details": "Curiosity-driven exploration",
+        "checkbox_items": [
+            "Select topics for coming week",
+            "Create curiosity-driven questions",
+            "Brief exploration without pressure",
+            "Set learning intentions"
+        ]
+    })
+
+    events.append({
+        "title": "Finance Studies with Weekly Review",
+        "time": "9:15-10:00 PM",
+        "details": "Financial review and goal setting",
+        "checkbox_items": [
+            "Review financial learning progress",
+            "Update tracking systems",
+            "Set specific financial goals for coming week",
+            "Create implementation schedule"
+        ]
+    })
+
+    return events
+
+
+def get_events_for_day(date):
+    """Get all events for a specific day of the week
+    
+    Args:
+        date: The date for which to get events
+        
+    Returns:
+        A list of event dictionaries for the specified date
+    """
+    # Get the day of the week (0 is Monday in Python's datetime)
+    day = date.weekday()
+    
+    # Map day number to appropriate function
+    if day == 3:  # Thursday (0=Monday, 3=Thursday)
+        return get_thursday_events(date)
+    elif day == 4:  # Friday
+        return get_friday_events(date)
+    elif day == 5:  # Saturday
+        return get_saturday_events(date)
+    elif day == 6:  # Sunday
+        return get_sunday_events(date)
+    else:
+        # Default for days without specific schedules
+        return [{
+            "title": "No events scheduled",
+            "time": "All day",
+            "details": "This day doesn't have a specific schedule",
+            "checkbox_items": ["Plan your day according to priorities"]
+        }]
+
+
+# Example usage
+if __name__ == "__main__":
+    # Get today's date
+    today = datetime.datetime.now()
+    
+    # Get events for different days
+    thursday_events = get_thursday_events(today)
+    friday_events = get_friday_events(today)
+    saturday_events = get_saturday_events(today)
+    sunday_events = get_sunday_events(today)
+    
+    # Get events for today
+    today_events = get_events_for_day(today)
+    
+    # Print example (for debugging)
+    import json
+    print(json.dumps(sunday_events, indent=2))
