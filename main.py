@@ -14,7 +14,7 @@ load_dotenv()
 notion = Client(auth=os.environ.get("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"))
 
 # Your Notion database ID
-DATABASE_ID = os.environ.get("NOTION_DATABASE_ID")
+DATABASE_ID = os.environ.get("1e7c01977e818039a827cf5dfff78ebe")
 
 # Timezone setting - change to your timezone
 TIMEZONE = pytz.timezone('Asia/Kolkata')  # Change to your timezone
