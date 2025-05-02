@@ -11,7 +11,7 @@ load_dotenv()
 
 # Initialize Notion client
 # You'll need to set your integration token as an environment variable
-notion = Client(auth=os.environ.get("NOTION_API_KEY"))
+notion = Client(auth=os.environ.get("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"))
 
 # Your Notion database ID
 DATABASE_ID = os.environ.get("NOTION_DATABASE_ID")
