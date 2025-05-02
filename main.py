@@ -157,7 +157,7 @@ def create_notion_event(title, start_time, end_time, details, checkbox_items=Non
     except Exception as e:
         print(f"Error creating event {title}: {e}")
 
-def getMondayEvents(date):
+def get_monday_events(date):
     """Get Monday's events"""
     events = []
     
@@ -369,7 +369,7 @@ def getMondayEvents(date):
     
     return events
 
-def getTuesdayEvents(date):
+def get_tuesday_events(date):
     """Get Tuesday's events"""
     events = []
     
@@ -581,7 +581,7 @@ def getTuesdayEvents(date):
     
     return events
 
-def getWednesdayEvents(date):
+def get_wednesday_events(date):
     """Get Wednesday's events"""
     events = []
     
@@ -780,13 +780,6 @@ def getWednesdayEvents(date):
     })
     
     return events
-
-"""
-Study Schedule Generator for Notion
-Complete implementation with Thursday through Sunday schedules
-"""
-
-import datetime
 
 def get_thursday_events(date):
     """Get Thursday's events - Analyze & Optimize"""
@@ -1579,6 +1572,9 @@ if __name__ == "__main__":
     today = datetime.datetime.now()
     
     # Get events for different days
+    monday_events = get_monday_events(today)
+    tuesday_events = get_tuesday_events(today)
+    wednesday_events = get_wednesday_events(today)
     thursday_events = get_thursday_events(today)
     friday_events = get_friday_events(today)
     saturday_events = get_saturday_events(today)
