@@ -1614,6 +1614,9 @@ if __name__ == "__main__":
     
     # Create events for today in Notion
     create_events_for_day(today)
+    database = notion.databases.retrieve(DATABASE_ID)
+    property_names = list(database["properties"].keys())
+    print(f"Available calendar properties: {property_names}")
     
     # Print the events for the current day (for debugging)
     today_events = get_events_for_day(today)
