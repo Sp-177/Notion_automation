@@ -1,5 +1,41 @@
-myenv/
-*.pyc
+# Ignore Python cache
 __pycache__/
-*.log
-*.env
+*.py[cod]
+
+# Ignore virtual environments
+venv/
+env/
+myenv/
+
+# Ignore distribution folders
+*.dist-info/
+*.egg-info/
+
+# Ignore pip installed packages
+anyio/
+certifi/
+exceptiongroup/
+h11/
+httpcore/
+httpx/
+idna/
+notion_client/
+pytz/
+sniffio/
+typing_extensions/
+dotenv/
+
+# Ignore AWS packages and build zips
+aws/
+lambda_package.zip
+lambda_package/
+
+# Ignore dotenv config
+.env
+
+# VS Code settings
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -1,7 +1,7 @@
+
 import os
-import datetime
-from datetime import timedelta
 import pytz
+from datetime import datetime, timedelta  # Import specific classes from datetime
 from notion_client import Client
 from dotenv import load_dotenv
 
@@ -18,7 +18,7 @@ TIMEZONE = pytz.timezone('Asia/Kolkata')  # Change to your timezone
 
 def get_current_day():
     """Get the current day of the week"""
-    now = datetime.datetime.now(TIMEZONE)
+    now = datetime.now(TIMEZONE)
     days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     return days[now.weekday()]
 
@@ -34,7 +34,7 @@ def get_time_block(time_str, date):
     if "AM" in time_str and hour == 12:
         hour = 0
 
-    return datetime.datetime(
+    return datetime(
         date.year, date.month, date.day, hour, minute, tzinfo=TIMEZONE
     ).isoformat()
 
@@ -53,7 +53,7 @@ def parse_time_range(time_range, date):
             start_hour = 0
 
         # Create datetime objects
-        start_dt = datetime.datetime(date.year, date.month, date.day, start_hour, start_minute, tzinfo=TIMEZONE)
+        start_dt = datetime(date.year, date.month, date.day, start_hour, start_minute, tzinfo=TIMEZONE)
         end_dt = start_dt + timedelta(hours=1)
         return start_dt.isoformat(), end_dt.isoformat()
 
@@ -83,14 +83,74 @@ def parse_time_range(time_range, date):
         end_hour = 0
 
     # Create datetime objects
-    start_dt = datetime.datetime(date.year, date.month, date.day, start_hour, start_minute, tzinfo=TIMEZONE)
-    end_dt = datetime.datetime(date.year, date.month, date.day, end_hour, end_minute, tzinfo=TIMEZONE)
+    start_dt = datetime(date.year, date.month, date.day, start_hour, start_minute, tzinfo=TIMEZONE)
+    end_dt = datetime(date.year, date.month, date.day, end_hour, end_minute, tzinfo=TIMEZONE)
 
     return start_dt.isoformat(), end_dt.isoformat()
 
-def create_notion_event(title, start_time, end_time, details, checkbox_items=None):
-    """Create a new event in the Notion database and log success or failure"""
+def create_today_events():
+    """Create events for today based on the day of the week"""
+    # Get today's date
+    today = datetime.now(TIMEZONE)  # Fixed by using datetime.now() directly
+    day_of_week = today.strftime("%A")
+    today_str = today.strftime("%Y-%m-%d")
+    
+    # Get events based on the day of the week
+    if day_of_week == "Monday":
+        events = get_monday_events(today_str)
+    elif day_of_week == "Tuesday":
+        events = get_tuesday_events(today_str)
+    elif day_of_week == "Wednesday":
+        events = get_wednesday_events(today_str)
+    elif day_of_week == "Thursday":
+        events = get_thursday_events(today_str)
+    elif day_of_week == "Friday":
+        events = get_friday_events(today_str)
+    elif day_of_week == "Saturday":
+        events = get_saturday_events(today_str)
+    elif day_of_week == "Sunday":
+        events = get_sunday_events(today_str)
+    else:
+        # Fallback if day is not recognized
+        events = [{
+            "title": "No events scheduled",
+            "time": "All day",
+            "details": "This day doesn't have a specific schedule",
+            "checkbox_items": ["Plan your day according to priorities"]
+        }]
+    
+    # Create each event in Notion
+
+
+    for event in reversed(events):
+        print(f"Creating event: {event['title']}")
+        create_notion_event(
+            title=event["title"],
+            time_range=event["time"],
+            details=event["details"],
+            checkbox_items=event["checkbox_items"],
+            category=get_category_from_time(event["time"])
+        )
+    
+    print(f"Created all events for {today_str} ({day_of_week})")
+
+def get_category_from_time(time_str):
+    return None
+
+def create_notion_event(title, time_range, details, checkbox_items, category=None):
+    """Create a single event in Notion with proper structure
+    
+    Args:
+        title (str): Title of the event
+        time_range (str): Time range like "7:30-8:00 AM"
+        details (str): Rich text description
+        checkbox_items (list): List of tasks to complete
+        category (str): Morning/Afternoon/Evening
+    """
+    today = datetime.now(TIMEZONE).strftime("%Y-%m-%d")  # Fixed this line
+    
     try:
+        # Create properties for the Notion page
         properties = {
             "Name": {
                 "title": [
@@ -103,9 +163,17 @@ def create_notion_event(title, start_time, end_time, details, checkbox_items=Non
             },
             "Date": {
                 "date": {
-                    "start": start_time,
-                    "end": end_time
+                    "start": today
                 }
+            },
+            "Time": {
+                "rich_text": [
+                    {
+                        "text": {
+                            "content": time_range
+                        }
+                    }
+                ]
             },
             "Details": {
                 "rich_text": [
@@ -117,21 +185,33 @@ def create_notion_event(title, start_time, end_time, details, checkbox_items=Non
                 ]
             }
         }
-
-        # Create the page
+        
+        # Add category if provided
+        if category:
+            properties["Category"] = {
+                "rich_text": [
+                    {
+                        "text": {
+                            "content": category
+                        }
+                    }
+                ]
+            }
+        
+        # Create the page in Notion
         page = notion.pages.create(
             parent={"database_id": DATABASE_ID},
             properties=properties
         )
-
-        # Check the response from Notion
+        
+        # Check if page was created successfully
         if page:
             print(f"Created event: {title} successfully in Notion.")
         else:
             print(f"Failed to create event: {title}.")
-
-        # If we have checkbox items, add them as children blocks
-        if checkbox_items:
+        
+        # Add checkbox items if provided
+        if checkbox_items and page:
             children = []
             for item in checkbox_items:
                 children.append({
@@ -148,14 +228,99 @@ def create_notion_event(title, start_time, end_time, details, checkbox_items=Non
                     block_id=page["id"],
                     children=children
                 )
-
-                # Check the response from appending children
+                
                 if response:
                     print(f"Added checklist items for {title}.")
                 else:
                     print(f"Failed to add checklist items for {title}.")
+        
+        return page
+    
     except Exception as e:
         print(f"Error creating event {title}: {e}")
+        return None
+
+def get_events_for_day(date):
+    """Get all events for a specific day of the week
+    
+    Args:
+        date: The date for which to get events
+        
+    Returns:
+        A list of event dictionaries for the specified date
+    """
+    # Get the day of the week (0 is Monday in Python's datetime)
+    day = date.weekday()
+    
+    # Map day number to appropriate function
+    if day == 0:  # Monday
+        return get_monday_events(date)
+    elif day == 1:  # Tuesday
+        return get_tuesday_events(date)
+    elif day == 2:  # Wednesday
+        return get_wednesday_events(date)
+    elif day == 3:  # Thursday
+        return get_thursday_events(date)
+    elif day == 4:  # Friday
+        return get_friday_events(date)
+    elif day == 5:  # Saturday
+        return get_saturday_events(date)
+    elif day == 6:  # Sunday
+        return get_sunday_events(date)
+    else:
+        # This should never happen, but just in case
+        return [{
+            "title": "No events scheduled",
+            "time": "All day",
+            "details": "This day doesn't have a specific schedule",
+            "checkbox_items": ["Plan your day according to priorities"]
+        }]
+
+def create_events_for_day(date):
+    """Create events in Notion for a specific day"""
+    events = get_events_for_day(date)
+    created_count = 0
+    
+    for event in reversed(events):
+        title = event["title"]
+        time_range = event["time"]
+        details = event["details"]
+        checkbox_items = event.get("checkbox_items", [])
+        
+        # Parse the time range into start and end times
+        start_time, end_time = parse_time_range(time_range, date)
+        
+        # Create the event in Notion
+        result = create_notion_event(title, time_range, details, checkbox_items, 
+                                    category=get_category_from_time(time_range))
+        if result:
+            created_count += 1
+    
+    return created_count
+
+def lambda_handler(event, context):
+    """AWS Lambda handler function"""
+    try:
+        # Get today's date (or tomorrow's date if running late in the day)
+        today = datetime.now(TIMEZONE)
+        
+        # Create events for today in Notion
+        created_count = create_events_for_day(today)
+        
+        # Return success response
+        return {
+            'statusCode': 200,
+            'body': f"Successfully created {created_count} events for {get_current_day()}"
+        }
+    except Exception as e:
+        # Log any errors
+        print(f"Error: {str(e)}")
+        return {
+            'statusCode': 500,
+            'body': f"Error: {str(e)}"
+        }
+
+
 def get_monday_events(date):
     """Get Monday's events"""
     events = []
@@ -1533,91 +1698,18 @@ def get_sunday_events(date):
 
     return events
 
-def get_events_for_day(date):
-    """Get all events for a specific day of the week
-    
-    Args:
-        date: The date for which to get events
-        
-    Returns:
-        A list of event dictionaries for the specified date
-    """
-    # Get the day of the week (0 is Monday in Python's datetime)
-    day = date.weekday()
-    
-    # Map day number to appropriate function
-    if day == 0:  # Monday
-        return get_monday_events(date)
-    elif day == 1:  # Tuesday
-        return get_tuesday_events(date)
-    elif day == 2:  # Wednesday
-        return get_wednesday_events(date)
-    elif day == 3:  # Thursday
-        return get_thursday_events(date)
-    elif day == 4:  # Friday
-        return get_friday_events(date)
-    elif day == 5:  # Saturday
-        return get_saturday_events(date)
-    elif day == 6:  # Sunday
-        return get_sunday_events(date)
-    else:
-        # This should never happen, but just in case
-        return [{
-            "title": "No events scheduled",
-            "time": "All day",
-            "details": "This day doesn't have a specific schedule",
-            "checkbox_items": ["Plan your day according to priorities"]
-        }]
-
-def create_events_for_day(date):
-    """Create events in Notion for a specific day"""
-    events = get_events_for_day(date)
-    
-    for event in events:
-        title = event["title"]
-        time_range = event["time"]
-        details = event["details"]
-        checkbox_items = event.get("checkbox_items", [])
-        
-        # Parse the time range into start and end times
-        start_time, end_time = parse_time_range(time_range, date)
-        
-        # Create the event in Notion
-        create_notion_event(title, start_time, end_time, details, checkbox_items)
-
-def lambda_handler(event, context):
-    """AWS Lambda handler function"""
-    try:
-        # Get today's date (or tomorrow's date if running late in the day)
-        today = datetime.datetime.now(TIMEZONE)
-        
-        # Create events for today in Notion
-        created_count = create_events_for_day(today)
-        
-        # Return success response
-        return {
-            'statusCode': 200,
-            'body': f"Successfully created {created_count} events for {get_current_day()}"
-        }
-    except Exception as e:
-        # Log any errors
-        print(f"Error: {str(e)}")
-        return {
-            'statusCode': 500,
-            'body': f"Error: {str(e)}"
-        }
-
-# Example usage
 if __name__ == "__main__":
     # Get today's date
-    today = datetime.datetime.now(TIMEZONE)
+    today = datetime.now(TIMEZONE)  # Fixed this line
     
     # Create events for today in Notion
-    create_events_for_day(today)
+    created_count = create_events_for_day(today)
+    
+    # Print database properties (for debugging)
     database = notion.databases.retrieve(DATABASE_ID)
     property_names = list(database["properties"].keys())
     print(f"Available calendar properties: {property_names}")
     
     # Print the events for the current day (for debugging)
     today_events = get_events_for_day(today)
-    print(f"Created {len(today_events)} events for {get_current_day()}.")
+    print(f"Created {created_count} events for {get_current_day()}.")
