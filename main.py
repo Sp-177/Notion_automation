@@ -1585,6 +1585,28 @@ def create_events_for_day(date):
         # Create the event in Notion
         create_notion_event(title, start_time, end_time, details, checkbox_items)
 
+def lambda_handler(event, context):
+    """AWS Lambda handler function"""
+    try:
+        # Get today's date (or tomorrow's date if running late in the day)
+        today = datetime.datetime.now(TIMEZONE)
+        
+        # Create events for today in Notion
+        created_count = create_events_for_day(today)
+        
+        # Return success response
+        return {
+            'statusCode': 200,
+            'body': f"Successfully created {created_count} events for {get_current_day()}"
+        }
+    except Exception as e:
+        # Log any errors
+        print(f"Error: {str(e)}")
+        return {
+            'statusCode': 500,
+            'body': f"Error: {str(e)}"
+        }
+
 # Example usage
 if __name__ == "__main__":
     # Get today's date
