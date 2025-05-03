@@ -3,19 +3,16 @@ import datetime
 from datetime import timedelta
 import pytz
 from notion_client import Client
-import json
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
 load_dotenv()
 
-# Initialize Notion client
-# You'll need to set your integration token as an environment variable
-notion = Client(auth=os.environ.get("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"))
+# Fix: Use proper environment variable retrieval
+notion = Client(auth=os.environ.get("NOTION_API_KEY"))
 
-# Your Notion database ID
-DATABASE_ID = os.environ.get("1e7c01977e818039a827cf5dfff78ebe")
-
+# Your Notion database ID - Fixed to use proper environment variable retrieval
+DATABASE_ID = os.environ.get("NOTION_DATABASE_ID")
 # Timezone setting - change to your timezone
 TIMEZONE = pytz.timezone('Asia/Kolkata')  # Change to your timezone
 
@@ -30,13 +27,13 @@ def get_time_block(time_str, date):
     if "-" in time_str:
         # Extract start time from range (e.g., "7:30-8:00 AM" -> "7:30 AM")
         time_str = time_str.split("-")[0].strip()
-    
+
     hour, minute = map(int, time_str.replace(" AM", "").replace(" PM", "").split(":"))
     if "PM" in time_str and hour != 12:
         hour += 12
     if "AM" in time_str and hour == 12:
         hour = 0
-        
+
     return datetime.datetime(
         date.year, date.month, date.day, hour, minute, tzinfo=TIMEZONE
     ).isoformat()
@@ -46,60 +43,53 @@ def parse_time_range(time_range, date):
     if "-" not in time_range:
         # If there's no range, default to 1 hour duration
         start_time = time_range
-        # Parse the start time
         start_hour, start_minute = map(int, start_time.replace(" AM", "").replace(" PM", "").split(":"))
         is_pm = "PM" in start_time
         is_am = "AM" in start_time
-        
+
         if is_pm and start_hour != 12:
             start_hour += 12
         if is_am and start_hour == 12:
             start_hour = 0
-            
+
         # Create datetime objects
         start_dt = datetime.datetime(date.year, date.month, date.day, start_hour, start_minute, tzinfo=TIMEZONE)
         end_dt = start_dt + timedelta(hours=1)
-        
         return start_dt.isoformat(), end_dt.isoformat()
-    
+
     # Split into start and end times
     parts = time_range.split("-")
     start_time = parts[0].strip()
     end_time = parts[1].strip()
-    
-    # Check if AM/PM is specified only in the end time
-    if ("AM" not in start_time and "PM" not in start_time) and ("AM" in end_time or "PM" in end_time):
-        am_pm = "AM" if "AM" in end_time else "PM"
-        start_time += f" {am_pm}"
-    
+
     # Parse the start time
     start_hour, start_minute = map(int, start_time.replace(" AM", "").replace(" PM", "").split(":"))
     is_pm = "PM" in start_time
     is_am = "AM" in start_time
-    
+
     if is_pm and start_hour != 12:
         start_hour += 12
     if is_am and start_hour == 12:
         start_hour = 0
-        
+
     # Parse the end time
     end_hour, end_minute = map(int, end_time.replace(" AM", "").replace(" PM", "").split(":"))
     is_pm = "PM" in end_time
     is_am = "AM" in end_time
-    
+
     if is_pm and end_hour != 12:
         end_hour += 12
     if is_am and end_hour == 12:
         end_hour = 0
-    
+
     # Create datetime objects
     start_dt = datetime.datetime(date.year, date.month, date.day, start_hour, start_minute, tzinfo=TIMEZONE)
     end_dt = datetime.datetime(date.year, date.month, date.day, end_hour, end_minute, tzinfo=TIMEZONE)
-    
+
     return start_dt.isoformat(), end_dt.isoformat()
 
 def create_notion_event(title, start_time, end_time, details, checkbox_items=None):
-    """Create a new event in the Notion database"""
+    """Create a new event in the Notion database and log success or failure"""
     try:
         properties = {
             "Name": {
@@ -127,13 +117,19 @@ def create_notion_event(title, start_time, end_time, details, checkbox_items=Non
                 ]
             }
         }
-        
+
         # Create the page
         page = notion.pages.create(
             parent={"database_id": DATABASE_ID},
             properties=properties
         )
-        
+
+        # Check the response from Notion
+        if page:
+            print(f"Created event: {title} successfully in Notion.")
+        else:
+            print(f"Failed to create event: {title}.")
+
         # If we have checkbox items, add them as children blocks
         if checkbox_items:
             children = []
@@ -148,15 +144,18 @@ def create_notion_event(title, start_time, end_time, details, checkbox_items=Non
                 })
             
             if children:
-                notion.blocks.children.append(
+                response = notion.blocks.children.append(
                     block_id=page["id"],
                     children=children
                 )
-        
-        print(f"Created event: {title}")
+
+                # Check the response from appending children
+                if response:
+                    print(f"Added checklist items for {title}.")
+                else:
+                    print(f"Failed to add checklist items for {title}.")
     except Exception as e:
         print(f"Error creating event {title}: {e}")
-
 def get_monday_events(date):
     """Get Monday's events"""
     events = []
@@ -1534,7 +1533,6 @@ def get_sunday_events(date):
 
     return events
 
-
 def get_events_for_day(date):
     """Get all events for a specific day of the week
     
@@ -1548,7 +1546,13 @@ def get_events_for_day(date):
     day = date.weekday()
     
     # Map day number to appropriate function
-    if day == 3:  # Thursday (0=Monday, 3=Thursday)
+    if day == 0:  # Monday
+        return get_monday_events(date)
+    elif day == 1:  # Tuesday
+        return get_tuesday_events(date)
+    elif day == 2:  # Wednesday
+        return get_wednesday_events(date)
+    elif day == 3:  # Thursday
         return get_thursday_events(date)
     elif day == 4:  # Friday
         return get_friday_events(date)
@@ -1557,7 +1561,7 @@ def get_events_for_day(date):
     elif day == 6:  # Sunday
         return get_sunday_events(date)
     else:
-        # Default for days without specific schedules
+        # This should never happen, but just in case
         return [{
             "title": "No events scheduled",
             "time": "All day",
@@ -1565,24 +1569,30 @@ def get_events_for_day(date):
             "checkbox_items": ["Plan your day according to priorities"]
         }]
 
+def create_events_for_day(date):
+    """Create events in Notion for a specific day"""
+    events = get_events_for_day(date)
+    
+    for event in events:
+        title = event["title"]
+        time_range = event["time"]
+        details = event["details"]
+        checkbox_items = event.get("checkbox_items", [])
+        
+        # Parse the time range into start and end times
+        start_time, end_time = parse_time_range(time_range, date)
+        
+        # Create the event in Notion
+        create_notion_event(title, start_time, end_time, details, checkbox_items)
 
 # Example usage
 if __name__ == "__main__":
     # Get today's date
-    today = datetime.datetime.now()
+    today = datetime.datetime.now(TIMEZONE)
     
-    # Get events for different days
-    monday_events = get_monday_events(today)
-    tuesday_events = get_tuesday_events(today)
-    wednesday_events = get_wednesday_events(today)
-    thursday_events = get_thursday_events(today)
-    friday_events = get_friday_events(today)
-    saturday_events = get_saturday_events(today)
-    sunday_events = get_sunday_events(today)
+    # Create events for today in Notion
+    create_events_for_day(today)
     
-    # Get events for today
+    # Print the events for the current day (for debugging)
     today_events = get_events_for_day(today)
-    
-    # Print example (for debugging)
-    import json
-    print(json.dumps(sunday_events, indent=2))
+    print(f"Created {len(today_events)} events for {get_current_day()}.")
