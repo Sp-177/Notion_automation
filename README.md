@@ -1,4 +1,4 @@
-# 🧠 Notion Automation with AWS Lambda (NOTION AUTOMATION AAWS)
+# 🧠 Notion Automation with AWS Lambda (NOTION AUTOMATION AWS)
 
 This project automates a task related to Notion using AWS Lambda. It runs **once per day** automatically using an **EventBridge (CloudWatch Events)** trigger and is optimized to run within the AWS Free Tier.
 
