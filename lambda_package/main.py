@@ -159,9 +159,13 @@ def create_notion_event(title, time_range, details, checkbox_items, category=Non
         # This will display as a colored dot/tag in the Notion interface
         if color:
             properties["Color"] = {
-                "select": {
-                    "name": color
-                }
+               "rich_text": [
+                    {
+                        "text": {
+                            "content": color
+                        }
+                    }
+                ]
             }
         
         # Create the page in Notion
@@ -256,15 +260,8 @@ def create_events_for_day(date):
         checkbox_items = event.get("checkbox_items", [])
         
         # Use provided color or detect from keywords
-        color = event.get("color")
-        if not color:
-            # Look for keywords in title or checkbox items
-            all_text = title.lower() + " " + details.lower() + " " + " ".join(checkbox_items).lower()
-            color = detect_color_from_keywords(all_text)
-            
-            # Add random variation
-            if random.random() < 0.2:  # 20% chance for completely random color
-                color = get_random_color()
+       
+        color = get_random_color()
         
         # Parse the time range into start and end times
         start_time, end_time = parse_time_range(time_range, date)
@@ -282,67 +279,6 @@ def create_events_for_day(date):
             created_count += 1
     
     return created_count
-
-def detect_color_from_keywords(text):
-    """Detect appropriate color based on keywords in text
-    
-    Args:
-        text (str): The text to analyze (title, details, checkbox items combined)
-    
-    Returns:
-        str: Color name
-    """
-    # Define keywords that map to specific colors
-    keyword_color_mapping = {
-        # Work/Productivity (blue)
-        "blue": ["meeting", "work", "project", "call", "zoom", "client", "planning", 
-                "review", "sync", "standup", "discuss", "talk", "presentation", "email",
-                "report", "analysis", "deadline", "priority", "follow up", "schedule"],
-        
-        # Health/Energy (green)
-        "green": ["exercise", "workout", "gym", "run", "jog", "hike", "walk", "fitness",
-                 "health", "training", "cardio", "strength", "energy", "fresh", "nature"],
-        
-        # Food/Meals (yellow)
-        "yellow": ["breakfast", "lunch", "dinner", "meal", "eat", "food", "cooking", 
-                  "recipe", "bake", "grocery", "nutrition", "snack", "diet"],
-        
-        # Creative/Social (orange)
-        "orange": ["brainstorm", "create", "design", "idea", "social", "friend", "party", 
-                  "event", "gathering", "meet", "coffee", "drinks", "date", "creative"],
-        
-        # Personal/Family (pink)
-        "pink": ["family", "personal", "self", "care", "relax", "leisure", "hobby", 
-                "home", "house", "clean", "organize", "shopping", "buy"],
-        
-        # Learning/Growth (purple)
-        "purple": ["learn", "study", "read", "book", "course", "class", "workshop", 
-                  "seminar", "research", "develop", "skill", "growth", "knowledge", 
-                  "education", "practice", "meditate", "mindful", "journal"],
-        
-        # Urgent/Important (red)
-        "red": ["urgent", "important", "critical", "doctor", "medical", "appointment", 
-               "deadline", "due", "tax", "bill", "payment", "interview", "exam", "test"],
-        
-        # Misc Tasks (brown)
-        "brown": ["errand", "task", "chore", "maintenance", "repair", "fix", "update", 
-                 "check", "verify", "review", "manage", "arrange", "organize"],
-        
-        # Routine/Admin (gray)
-        "gray": ["routine", "admin", "administrative", "process", "procedure", "system", 
-                "maintain", "track", "log", "record", "daily", "weekly", "monthly"]
-    }
-    
-    # Check for keyword matches
-    for color, keywords in keyword_color_mapping.items():
-        for keyword in keywords:
-            if keyword in text:
-                return color
-    
-    # Default to random color if no keywords match
-    return get_random_color()
-
-# Import for random selection
 
 
 def get_random_color():
