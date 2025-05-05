@@ -4,7 +4,7 @@ import pytz
 from datetime import datetime, timedelta  # Import specific classes from datetime
 from notion_client import Client
 from dotenv import load_dotenv
-
+import random
 # Load environment variables from .env file
 load_dotenv()
 
@@ -88,56 +88,11 @@ def parse_time_range(time_range, date):
 
     return start_dt.isoformat(), end_dt.isoformat()
 
-def create_today_events():
-    """Create events for today based on the day of the week"""
-    # Get today's date
-    today = datetime.now(TIMEZONE)  # Fixed by using datetime.now() directly
-    day_of_week = today.strftime("%A")
-    today_str = today.strftime("%Y-%m-%d")
-    
-    # Get events based on the day of the week
-    if day_of_week == "Monday":
-        events = get_monday_events(today_str)
-    elif day_of_week == "Tuesday":
-        events = get_tuesday_events(today_str)
-    elif day_of_week == "Wednesday":
-        events = get_wednesday_events(today_str)
-    elif day_of_week == "Thursday":
-        events = get_thursday_events(today_str)
-    elif day_of_week == "Friday":
-        events = get_friday_events(today_str)
-    elif day_of_week == "Saturday":
-        events = get_saturday_events(today_str)
-    elif day_of_week == "Sunday":
-        events = get_sunday_events(today_str)
-    else:
-        # Fallback if day is not recognized
-        events = [{
-            "title": "No events scheduled",
-            "time": "All day",
-            "details": "This day doesn't have a specific schedule",
-            "checkbox_items": ["Plan your day according to priorities"]
-        }]
-    
-    # Create each event in Notion
-
-
-    for event in reversed(events):
-        print(f"Creating event: {event['title']}")
-        create_notion_event(
-            title=event["title"],
-            time_range=event["time"],
-            details=event["details"],
-            checkbox_items=event["checkbox_items"],
-            category=get_category_from_time(event["time"])
-        )
-    
-    print(f"Created all events for {today_str} ({day_of_week})")
 
 def get_category_from_time(time_str):
     return None
 
-def create_notion_event(title, time_range, details, checkbox_items, category=None):
+def create_notion_event(title, time_range, details, checkbox_items, category=None, color=None):
     """Create a single event in Notion with proper structure
     
     Args:
@@ -146,8 +101,10 @@ def create_notion_event(title, time_range, details, checkbox_items, category=Non
         details (str): Rich text description
         checkbox_items (list): List of tasks to complete
         category (str): Morning/Afternoon/Evening
+        color (str): Color for the event (blue, red, green, yellow, orange, pink, purple, brown, gray)
+                    This will be visible as a colored dot/tag in the Notion interface
     """
-    today = datetime.now(TIMEZONE).strftime("%Y-%m-%d")  # Fixed this line
+    today = datetime.now(TIMEZONE).strftime("%Y-%m-%d")
     
     try:
         # Create properties for the Notion page
@@ -198,6 +155,15 @@ def create_notion_event(title, time_range, details, checkbox_items, category=Non
                 ]
             }
         
+        # Add color if provided (using a select property)
+        # This will display as a colored dot/tag in the Notion interface
+        if color:
+            properties["Color"] = {
+                "select": {
+                    "name": color
+                }
+            }
+        
         # Create the page in Notion
         page = notion.pages.create(
             parent={"database_id": DATABASE_ID},
@@ -206,7 +172,7 @@ def create_notion_event(title, time_range, details, checkbox_items, category=Non
         
         # Check if page was created successfully
         if page:
-            print(f"Created event: {title} successfully in Notion.")
+            print(f"Created event: {title} successfully in Notion with color: {color}")
         else:
             print(f"Failed to create event: {title}.")
         
@@ -239,6 +205,7 @@ def create_notion_event(title, time_range, details, checkbox_items, category=Non
     except Exception as e:
         print(f"Error creating event {title}: {e}")
         return None
+
 
 def get_events_for_day(date):
     """Get all events for a specific day of the week
@@ -274,6 +241,7 @@ def get_events_for_day(date):
             "time": "All day",
             "details": "This day doesn't have a specific schedule",
             "checkbox_items": ["Plan your day according to priorities"]
+            # Color will be assigned randomly
         }]
 
 def create_events_for_day(date):
@@ -287,16 +255,105 @@ def create_events_for_day(date):
         details = event["details"]
         checkbox_items = event.get("checkbox_items", [])
         
+        # Use provided color or detect from keywords
+        color = event.get("color")
+        if not color:
+            # Look for keywords in title or checkbox items
+            all_text = title.lower() + " " + details.lower() + " " + " ".join(checkbox_items).lower()
+            color = detect_color_from_keywords(all_text)
+            
+            # Add random variation
+            if random.random() < 0.2:  # 20% chance for completely random color
+                color = get_random_color()
+        
         # Parse the time range into start and end times
         start_time, end_time = parse_time_range(time_range, date)
-        
+
         # Create the event in Notion
-        result = create_notion_event(title, time_range, details, checkbox_items, 
-                                    category=get_category_from_time(time_range))
+        result = create_notion_event(
+            title=title, 
+            time_range=time_range, 
+            details=details, 
+            checkbox_items=checkbox_items,
+            category=get_category_from_time(time_range),
+            color=color
+        )
         if result:
             created_count += 1
     
     return created_count
+
+def detect_color_from_keywords(text):
+    """Detect appropriate color based on keywords in text
+    
+    Args:
+        text (str): The text to analyze (title, details, checkbox items combined)
+    
+    Returns:
+        str: Color name
+    """
+    # Define keywords that map to specific colors
+    keyword_color_mapping = {
+        # Work/Productivity (blue)
+        "blue": ["meeting", "work", "project", "call", "zoom", "client", "planning", 
+                "review", "sync", "standup", "discuss", "talk", "presentation", "email",
+                "report", "analysis", "deadline", "priority", "follow up", "schedule"],
+        
+        # Health/Energy (green)
+        "green": ["exercise", "workout", "gym", "run", "jog", "hike", "walk", "fitness",
+                 "health", "training", "cardio", "strength", "energy", "fresh", "nature"],
+        
+        # Food/Meals (yellow)
+        "yellow": ["breakfast", "lunch", "dinner", "meal", "eat", "food", "cooking", 
+                  "recipe", "bake", "grocery", "nutrition", "snack", "diet"],
+        
+        # Creative/Social (orange)
+        "orange": ["brainstorm", "create", "design", "idea", "social", "friend", "party", 
+                  "event", "gathering", "meet", "coffee", "drinks", "date", "creative"],
+        
+        # Personal/Family (pink)
+        "pink": ["family", "personal", "self", "care", "relax", "leisure", "hobby", 
+                "home", "house", "clean", "organize", "shopping", "buy"],
+        
+        # Learning/Growth (purple)
+        "purple": ["learn", "study", "read", "book", "course", "class", "workshop", 
+                  "seminar", "research", "develop", "skill", "growth", "knowledge", 
+                  "education", "practice", "meditate", "mindful", "journal"],
+        
+        # Urgent/Important (red)
+        "red": ["urgent", "important", "critical", "doctor", "medical", "appointment", 
+               "deadline", "due", "tax", "bill", "payment", "interview", "exam", "test"],
+        
+        # Misc Tasks (brown)
+        "brown": ["errand", "task", "chore", "maintenance", "repair", "fix", "update", 
+                 "check", "verify", "review", "manage", "arrange", "organize"],
+        
+        # Routine/Admin (gray)
+        "gray": ["routine", "admin", "administrative", "process", "procedure", "system", 
+                "maintain", "track", "log", "record", "daily", "weekly", "monthly"]
+    }
+    
+    # Check for keyword matches
+    for color, keywords in keyword_color_mapping.items():
+        for keyword in keywords:
+            if keyword in text:
+                return color
+    
+    # Default to random color if no keywords match
+    return get_random_color()
+
+# Import for random selection
+
+
+def get_random_color():
+    """Return a random color from Notion's available colors"""
+    notion_colors = [
+        "blue", "red", "green", "yellow", "orange", 
+        "pink", "purple", "brown", "gray", "default"
+    ]
+    # Add weight to make some colors appear more frequently
+    weighted_colors = notion_colors + ["blue", "green", "purple", "pink", "orange"]
+    return random.choice(weighted_colors)
 
 def lambda_handler(event, context):
     """AWS Lambda handler function"""
