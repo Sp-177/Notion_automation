@@ -210,7 +210,46 @@ def create_notion_event(title, time_range, details, checkbox_items, category=Non
         print(f"Error creating event {title}: {e}")
         return None
 
+def remove_yesterdays_date_from_tasks():
+    """
+    Unsets the 'Date' property for all tasks in the database that are scheduled for yesterday.
+    Uses globally declared `notion_token` and `database_id`.
+    """
+    yesterday = (datetime.today() - timedelta(days=1)).strftime("%Y-%m-%d")
 
+    try:
+        # Query tasks scheduled for yesterday
+        response = notion.databases.query(
+            database_id=DATABASE_ID,
+            filter={
+                "property": "Date",  # Change if your date property has a different name
+                "date": {
+                    "equals": yesterday
+                }
+            }
+        )
+
+        tasks = response.get("results", [])
+        if not tasks:
+            print(f"No tasks found with yesterday's date ({yesterday}).")
+            return
+
+        # Remove the date from each task
+        for task in tasks:
+            notion.pages.update(
+                page_id=task["id"],
+                properties={
+                    "Date": {
+                        "date": None
+                    }
+                }
+            )
+            print(f"Removed yesterday's date from task: {task['id']}")
+
+        print(f"Updated {len(tasks)} task(s) that had date = {yesterday}.")
+
+    except Exception as e:
+        print(f"Error: {e}")
 def get_events_for_day(date):
     """Get all events for a specific day of the week
     
@@ -253,6 +292,8 @@ def create_events_for_day(date):
     events = get_events_for_day(date)
     created_count = 0
     
+    remove_yesterdays_date_from_tasks()
+
     for event in reversed(events):
         title = event["title"]
         time_range = event["time"]
