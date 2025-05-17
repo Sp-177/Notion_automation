@@ -1,14 +1,14 @@
-
 import os
 import pytz
-from datetime import datetime, timedelta  # Import specific classes from datetime
+from datetime import datetime, timedelta
 from notion_client import Client
 from dotenv import load_dotenv
 import random
+
 # Load environment variables from .env file
 load_dotenv()
 
-# Fix: Use proper environment variable retrieval
+# Use proper environment variable retrieval
 notion = Client(auth=os.environ.get("NOTION_API_KEY"))
 
 # Your Notion database ID - Fixed to use proper environment variable retrieval
@@ -155,8 +155,7 @@ def create_notion_event(title, time_range, details, checkbox_items, category=Non
                 ]
             }
         
-        # Add color if provided (using a select property)
-        # This will display as a colored dot/tag in the Notion interface
+        # Add color if provided (using a rich_text property)
         if color:
             properties["Color"] = {
                "rich_text": [
@@ -210,46 +209,74 @@ def create_notion_event(title, time_range, details, checkbox_items, category=Non
         print(f"Error creating event {title}: {e}")
         return None
 
-def remove_yesterdays_date_from_tasks():
-    """
-    Unsets the 'Date' property for all tasks in the database that are scheduled for yesterday.
-    Uses globally declared `notion_token` and `database_id`.
-    """
-    yesterday = (datetime.today() - timedelta(days=1)).strftime("%Y-%m-%d")
-
+def remove_tasks_without_todays_date():
+    """Removes all tasks from the database that don't have today's date."""
+    today = datetime.now(TIMEZONE).strftime("%Y-%m-%d")
+    
     try:
-        # Query tasks scheduled for yesterday
-        response = notion.databases.query(
-            database_id=DATABASE_ID,
-            filter={
-                "property": "Date",  # Change if your date property has a different name
-                "date": {
-                    "equals": yesterday
-                }
+        tasks = []
+        has_more = True
+        next_cursor = None
+        
+        # Get all tasks with pagination
+        while has_more:
+            # Query parameters
+            query_params = {
+                "database_id": DATABASE_ID,
+                "page_size": 100  # Maximum allowed by Notion API
             }
-        )
-
-        tasks = response.get("results", [])
+            
+            # Add start_cursor if we have one from previous pagination
+            if next_cursor:
+                query_params["start_cursor"] = next_cursor
+                
+            # Execute query
+            response = notion.databases.query(**query_params)
+            
+            # Add results to our tasks list
+            tasks.extend(response.get("results", []))
+            
+            # Check if there are more results
+            has_more = response.get("has_more", False)
+            next_cursor = response.get("next_cursor")
+            
+            # Print progress
+            print(f"Fetched {len(response.get('results', []))} tasks from Notion database...")
+        
+        print(f"Total tasks retrieved: {len(tasks)}")
+        
         if not tasks:
-            print(f"No tasks found with yesterday's date ({yesterday}).")
-            return
-
-        # Remove the date from each task
+            print("No tasks found in the database.")
+            return 0
+        
+        tasks_to_remove = []
+        
+        # Filter tasks manually
         for task in tasks:
+            date_property = task.get("properties", {}).get("Date", {})
+            date_value = date_property.get("date", {})
+            
+            # Check if date is empty (None) or not equal to today
+            if date_value is None or date_value.get("start") != today:
+                tasks_to_remove.append(task)
+        
+        print(f"Found {len(tasks_to_remove)} tasks without today's date ({today}).")
+        
+        # Archive each task that doesn't have today's date
+        for task in tasks_to_remove:
             notion.pages.update(
                 page_id=task["id"],
-                properties={
-                    "Date": {
-                        "date": None
-                    }
-                }
+                archived=True  # This effectively deletes the page in Notion
             )
-            print(f"Removed yesterday's date from task: {task['id']}")
-
-        print(f"Updated {len(tasks)} task(s) that had date = {yesterday}.")
-
+            print(f"Removed task: {task['id']}")
+        
+        print(f"Successfully removed {len(tasks_to_remove)} task(s) that didn't have today's date = {today}.")
+        return len(tasks_to_remove)
+    
     except Exception as e:
-        print(f"Error: {e}")
+        print(f"Error removing tasks: {e}")
+        return 0
+    
 def get_events_for_day(date):
     """Get all events for a specific day of the week
     
@@ -292,7 +319,9 @@ def create_events_for_day(date):
     events = get_events_for_day(date)
     created_count = 0
     
-    remove_yesterdays_date_from_tasks()
+    # Remove tasks that don't have today's date
+    removed_count = remove_tasks_without_todays_date()
+    print(f"Removed {removed_count} tasks without today's date")
 
     for event in reversed(events):
         title = event["title"]
@@ -300,8 +329,7 @@ def create_events_for_day(date):
         details = event["details"]
         checkbox_items = event.get("checkbox_items", [])
         
-        # Use provided color or detect from keywords
-       
+        # Get a random color
         color = get_random_color()
         
         # Parse the time range into start and end times
@@ -335,8 +363,11 @@ def get_random_color():
 def lambda_handler(event, context):
     """AWS Lambda handler function"""
     try:
-        # Get today's date (or tomorrow's date if running late in the day)
+        # Get today's date
         today = datetime.now(TIMEZONE)
+        
+        # First remove tasks that don't have today's date, then create events
+        print(f"Starting process for {get_current_day()} ({today.strftime('%Y-%m-%d')})")
         
         # Create events for today in Notion
         created_count = create_events_for_day(today)
@@ -344,7 +375,7 @@ def lambda_handler(event, context):
         # Return success response
         return {
             'statusCode': 200,
-            'body': f"Successfully created {created_count} events for {get_current_day()}"
+            'body': f"Successfully processed tasks and created {created_count} events for {get_current_day()}"
         }
     except Exception as e:
         # Log any errors
@@ -353,7 +384,6 @@ def lambda_handler(event, context):
             'statusCode': 500,
             'body': f"Error: {str(e)}"
         }
-
 
 def get_monday_events(date):
     """Get Monday's events"""
